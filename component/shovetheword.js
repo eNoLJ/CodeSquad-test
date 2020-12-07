@@ -10,14 +10,23 @@ function showResult(result) {
 // 단어를 밀어내는 함수
 function shoveTheWord(word, int, cmd) {
   let wordArr = word.split('');
+  cmd = cmd.toUpperCase();
 
-  if (cmd.toUpperCase() === 'L') {
-    for (let i = 0; i < int; i++) {
+  if (int < 0) {
+    if (cmd === 'L') {
+      cmd = 'R';
+    } else if (cmd === 'R') {
+      cmd = 'L';
+    }
+  }
+
+  if (cmd === 'L') {
+    for (let i = 0; i < Math.abs(int); i++) {
       let char = wordArr.shift();
       wordArr.push(char);
     }
-  } else if (cmd.toUpperCase() == 'R') {
-    for (let i = 0; i < int; i++) {
+  } else if (cmd == 'R') {
+    for (let i = 0; i < Math.abs(int); i++) {
       let char = wordArr.pop();
       wordArr.unshift(char);
     }
