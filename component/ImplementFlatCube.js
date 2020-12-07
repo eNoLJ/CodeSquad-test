@@ -1,27 +1,46 @@
+// Q 입력 시 dom으로 종료 출력
+function showEnd() {
+  const outputValue = document.querySelector('#outputValue');
+  const newResult = document.createElement('li');
+  newResult.classList.add('result');
+  newResult.textContent = 'Bye~';
+  outputValue.insertBefore(newResult, outputValue.firstChild);
+}
+
+// dom을 이용한 결과 출력
+function showResult(char) {
+  const result = char + '<br>' + flatCube[0] + '<br>' + flatCube[1] + '<br>' + flatCube[2] + '<br>';
+  const outputValue = document.querySelector('#outputValue');
+  const newResult = document.createElement('li');
+  newResult.classList.add('result');
+  newResult.innerHTML = result;
+  outputValue.insertBefore(newResult, outputValue.firstChild);
+}
+
 // 플랫 큐브 적용
 function makeFlatCube(line, char) {
   let copyFlatCube = flatCube.slice();
 
-  if (char === 'U') {
+  if (char[0] === 'U') {
     copyFlatCube[0] = line;
-  } else if (char === 'R') {
+  } else if (char[0] === 'R') {
     for (let i = 0; i < copyFlatCube.length; i++) {
       let copyLine = copyFlatCube[i].slice();
       copyLine[2] = line[i];
       copyFlatCube[i] = copyLine;
     }
-  } else if (char === 'L') {
+  } else if (char[0] === 'L') {
     for (let i = 0; i < copyFlatCube.length; i++) {
       let copyLine = copyFlatCube[i].slice();
       copyLine[0] = line[i];
       copyFlatCube[i] = copyLine;
     }
-  } else if (char === 'B') {
+  } else if (char[0] === 'B') {
     copyFlatCube[2] = line;
   }
 
   flatCube = copyFlatCube;
-  // dom으로 결과 출력
+  showResult(char);
 }
 
 // 한줄 밀기
@@ -54,12 +73,14 @@ function pushFlatCube(value) {
       line = flatCube[2].slice();
       length = length === 1 ? 2 : 1;
     } else if (char[0] === 'Q') {
-      // 큐브 초기화 후 이벤트 종료 그리고 안내
+      const inputValue = document.querySelector('#inputValue');
+      inputValue.removeEventListener('keypress', pressEnter);
+      showEnd();
       return;
     }
 
     let result = pushLine(line, length);
-    makeFlatCube(result, char[0]);
+    makeFlatCube(result, char);
   }
 }
 
@@ -108,9 +129,7 @@ function init() {
     ['G', 'B', 'B'],
   ];
   const inputValue = document.querySelector('#inputValue');
-  inputValue.onkeypress = function (e) {
-    pressEnter(e);
-  };
+  inputValue.addEventListener('keypress', pressEnter);
 }
 
 init();

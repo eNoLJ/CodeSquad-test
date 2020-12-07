@@ -69,9 +69,7 @@ function pressEnter(e) {
 // 파일을 읽을 때 input 박스에 이벤트를 건다.
 function init() {
   const inputValue = document.querySelector('#inputValue');
-  inputValue.onkeypress = function (e) {
-    pressEnter(e);
-  };
+  inputValue.addEventListener('keypress', pressEnter);
 }
 
 init();
