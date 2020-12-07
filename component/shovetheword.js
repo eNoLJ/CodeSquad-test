@@ -1,0 +1,68 @@
+// dom을 이용한 결과 출력
+function showResult(result) {
+  const outputValue = document.querySelector('#outputValue');
+  const newResult = document.createElement('li');
+  newResult.classList.add('result');
+  newResult.textContent = result;
+  outputValue.insertBefore(newResult, outputValue.firstChild);
+}
+
+// 단어를 밀어내는 함수
+function shoveTheWord(word, int, cmd) {
+  let wordArr = word.split('');
+
+  if (cmd.toUpperCase() === 'L') {
+    for (let i = 0; i < int; i++) {
+      let char = wordArr.shift();
+      wordArr.push(char);
+    }
+  } else if (cmd.toUpperCase() == 'R') {
+    for (let i = 0; i < int; i++) {
+      let char = wordArr.pop();
+      wordArr.unshift(char);
+    }
+  }
+
+  return wordArr.join('');
+}
+
+// 명령에 대한 유효성 검사
+function validateCommand(cmd) {
+  return cmd.toUpperCase() === 'L' || cmd.toUpperCase() === 'R';
+}
+
+// 숫자에 대한 유효성 검사
+function validateInteger(integer) {
+  const int = Number(integer);
+  return -100 <= int && int < 100 && Number.isInteger(int);
+}
+
+// 입력값에 대한 유효성 검사
+function validateInputValue(value) {
+  const valurArr = value.split(' ');
+  const [word, integer, command] = valurArr;
+
+  if (validateInteger(integer) && validateCommand(command)) {
+    let result = shoveTheWord(word, integer, command);
+    showResult(result);
+  } else {
+    alert('올바른 값을 입력해 주세요.');
+  }
+}
+
+// enter 클릭 시 입력값에 대한 유효성검사 함수 실행.
+function pressEnter(e) {
+  if (e.keyCode === 13) {
+    validateInputValue(e.target.value);
+  }
+}
+
+// 파일을 읽을 때 input 박스에 이벤트를 건다.
+function init() {
+  const inputValue = document.querySelector('#inputValue');
+  inputValue.onkeypress = function (e) {
+    pressEnter(e);
+  };
+}
+
+init();
