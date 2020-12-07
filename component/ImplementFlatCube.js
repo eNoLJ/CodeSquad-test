@@ -1,3 +1,29 @@
+// 플랫 큐브 적용
+function makeFlatCube(line, char) {
+  let copyFlatCube = flatCube.slice();
+
+  if (char === 'U') {
+    copyFlatCube[0] = line;
+  } else if (char === 'R') {
+    for (let i = 0; i < copyFlatCube.length; i++) {
+      let copyLine = copyFlatCube[i].slice();
+      copyLine[2] = line[i];
+      copyFlatCube[i] = copyLine;
+    }
+  } else if (char === 'L') {
+    for (let i = 0; i < copyFlatCube.length; i++) {
+      let copyLine = copyFlatCube[i].slice();
+      copyLine[0] = line[i];
+      copyFlatCube[i] = copyLine;
+    }
+  } else if (char === 'B') {
+    copyFlatCube[2] = line;
+  }
+
+  flatCube = copyFlatCube;
+  // dom으로 결과 출력
+}
+
 // 한줄 밀기
 function pushLine(value, length) {
   if (length === 1) {
@@ -8,25 +34,6 @@ function pushLine(value, length) {
     value.unshift(char);
   }
   return value;
-}
-
-function makeFlatCube(line, char) {
-  let copyFlatCube = flatCube.slice();
-
-  if (char === 'U') {
-    copyFlatCube[0] = line;
-  } else if (char === 'R') {
-    for (let i = 0; i < copyFlatCube.length; i++) {
-      // 구현
-    }
-  } else if (char === 'L') {
-    //구현
-  } else if (char === 'B') {
-    copyFlatCube[2] = line;
-  }
-
-  flatCube = copyFlatCube;
-  //   console.log(flatCube);
 }
 
 // 큐브 밀기
