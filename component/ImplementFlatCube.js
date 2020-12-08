@@ -1,15 +1,19 @@
-// Q 입력 시 dom으로 종료 출력
-function showEnd() {
-  const outputValue = document.querySelector('#outputValue');
-  const newResult = document.createElement('li');
-  newResult.classList.add('result');
-  newResult.textContent = 'Bye~';
-  outputValue.insertBefore(newResult, outputValue.firstChild);
+// 이벤트 삭제
+function deleteEvent() {
+  const inputValue = document.querySelector('#inputValue');
+  inputValue.removeEventListener('keypress', pressEnter);
 }
 
 // dom을 이용한 결과 출력
 function showResult(char) {
-  const result = char + '<br>' + flatCube[0] + '<br>' + flatCube[1] + '<br>' + flatCube[2] + '<br>';
+  let result;
+
+  if (char === 'Q') {
+    result = 'bye~';
+  } else {
+    result = char + '<br>' + flatCube[0] + '<br>' + flatCube[1] + '<br>' + flatCube[2] + '<br>';
+  }
+
   const outputValue = document.querySelector('#outputValue');
   const newResult = document.createElement('li');
   newResult.classList.add('result');
@@ -73,9 +77,8 @@ function pushFlatCube(value) {
       line = flatCube[2].slice();
       length = length === 1 ? 2 : 1;
     } else if (char[0] === 'Q') {
-      const inputValue = document.querySelector('#inputValue');
-      inputValue.removeEventListener('keypress', pressEnter);
-      showEnd();
+      deleteEvent();
+      showResult(char);
       return;
     }
 
