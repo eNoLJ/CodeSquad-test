@@ -86,13 +86,13 @@ function pushFlatCube(value) {
       length = length === 1 ? 2 : 1;
     } else if (char[0] === 'Q') {
       deleteEvent();
-      showResult(char);
+      setTimeout(() => showResult(char), 500 * i);
       return;
     }
 
     let result = pushLine(line, length);
     makeFlatCube(result, char[0]);
-    showResult(char);
+    setTimeout(() => showResult(char), 500 * i);
   }
 }
 
@@ -140,6 +140,7 @@ function validateInputValue(value) {
 function pressEnter(e) {
   if (e.keyCode === 13) {
     validateInputValue(e.target.value);
+    e.target.value = '';
   }
 }
 
