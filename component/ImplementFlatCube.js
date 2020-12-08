@@ -25,26 +25,25 @@ function showResult(char) {
 function makeFlatCube(line, char) {
   let copyFlatCube = flatCube.slice();
 
-  if (char[0] === 'U') {
+  if (char === 'U') {
     copyFlatCube[0] = line;
-  } else if (char[0] === 'R') {
+  } else if (char === 'R') {
     for (let i = 0; i < copyFlatCube.length; i++) {
       let copyLine = copyFlatCube[i].slice();
       copyLine[2] = line[i];
       copyFlatCube[i] = copyLine;
     }
-  } else if (char[0] === 'L') {
+  } else if (char === 'L') {
     for (let i = 0; i < copyFlatCube.length; i++) {
       let copyLine = copyFlatCube[i].slice();
       copyLine[0] = line[i];
       copyFlatCube[i] = copyLine;
     }
-  } else if (char[0] === 'B') {
+  } else if (char === 'B') {
     copyFlatCube[2] = line;
   }
 
   flatCube = copyFlatCube;
-  showResult(char);
 }
 
 // 한줄 밀기
@@ -83,8 +82,21 @@ function pushFlatCube(value) {
     }
 
     let result = pushLine(line, length);
-    makeFlatCube(result, char);
+    makeFlatCube(result, char[0]);
+    showResult(char);
   }
+}
+
+// 입력 받은 문자열 재조합
+function recombinantString(value) {
+  return value.split('').reduce((acc, cur) => {
+    if (cur === "'") {
+      acc[acc.length - 1] += "'";
+    } else {
+      acc.push(cur);
+    }
+    return acc;
+  }, []);
 }
 
 // 알파벳에 대한 유효성 검사
@@ -95,8 +107,6 @@ function validateChar(char) {
 
 // 입력값에 대한 유효성 검사
 function validateInputValue(value) {
-  let valueArr = [];
-
   if (!validateChar(value[0])) {
     alert('올바른 값을 입력해 주세요.');
     return false;
@@ -105,16 +115,16 @@ function validateInputValue(value) {
   for (let i = 0; i < value.length; i++) {
     if (!validateChar(value[i]) && !(value[i] === "'" && value[i - 1] !== "'")) {
       alert('올바른 값을 입력해 주세요.');
-      return false;
+      return;
     }
-    if (value[i] === "'") {
-      valueArr[valueArr.length - 1] = valueArr[valueArr.length - 1] + "'";
-    } else {
-      valueArr.push(value[i]);
+    if (value[i].toUpperCase() === 'Q' && value[i + 1] === "'") {
+      alert('올바른 값을 입력해 주세요.');
+      return;
     }
   }
 
-  pushFlatCube(valueArr);
+  let recombinantArr = recombinantString(value);
+  pushFlatCube(recombinantArr);
 }
 
 // enter 클릭 시 입력값에 대한 유효성검사 함수 실행.
