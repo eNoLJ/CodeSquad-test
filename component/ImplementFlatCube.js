@@ -4,6 +4,15 @@ function deleteEvent() {
   inputValue.removeEventListener('keypress', pressEnter);
 }
 
+// 웹 출력을 위해 flatCube 배열을 문자열로 변경
+function cubeToString() {
+  return `
+    <br> ${flatCube[0][0]} ${flatCube[0][1]} ${flatCube[0][2]}
+    <br> ${flatCube[1][0]} ${flatCube[1][1]} ${flatCube[1][2]}
+    <br> ${flatCube[2][0]} ${flatCube[2][1]} ${flatCube[2][2]}
+    `;
+}
+
 // dom을 이용한 결과 출력
 function showResult(char) {
   let result;
@@ -11,7 +20,7 @@ function showResult(char) {
   if (char === 'Q') {
     result = 'bye~';
   } else {
-    result = char + '<br>' + flatCube[0] + '<br>' + flatCube[1] + '<br>' + flatCube[2] + '<br>';
+    result = char + cubeToString();
   }
 
   const outputValue = document.querySelector('#outputValue');
