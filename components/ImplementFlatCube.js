@@ -118,7 +118,7 @@ function validateChar(char) {
 function validateInputValue(value) {
   if (!validateChar(value[0])) {
     alert('올바른 값을 입력해 주세요.');
-    return false;
+    return;
   }
 
   for (let i = 0; i < value.length; i++) {
