@@ -13,9 +13,12 @@ function init() {
   };
 
   const inputValue = document.querySelector('#inputValue');
+  const button = document.querySelector('#shuffleButton');
+  const randomButton = document.querySelector('#randomShuffleButton');
   inputValue.addEventListener('keypress', pressEnter);
+  button.addEventListener('click', clickShuffleButton);
+  randomButton.addEventListener('click', clickRandomShuffleButton);
   makeDom('#initialCube', 'div', 'cube', cubeToString());
-  shuffleEvent();
 }
 
 // 입력 받은 색깔로 2차원 배열 생성
@@ -52,6 +55,9 @@ function validateInputValue(value) {
       return;
     } else if (Number(value[i]) === 2 && !validateChar(value[i - 1])) {
       alert('올바른 값을 입력해 주세요.4');
+      return;
+    } else if (value[i].toUpperCase() === 'Q' && value[i + 1]) {
+      alert('올바른 값을 입력해 주세요.5');
       return;
     }
   }
@@ -90,7 +96,7 @@ function recombinantString(value) {
 function pushRubiksCube(value) {
   for (let i = 0; i < value.length; i++) {
     if (value[i].toUpperCase() === 'Q') {
-      // deleteEvent();
+      deleteEvent();
     } else if (Number(value[i][1]) === 2) {
       turnCube(value[i]);
     }
@@ -98,8 +104,7 @@ function pushRubiksCube(value) {
     if (value[i].toUpperCase() !== 'Q') {
       turnCube(value[i]);
     }
-    showResult(value[i].toUpperCase());
-    // setTimeout(() => showResult(char), 500 * i);
+    setTimeout(() => showResult(value[i].toUpperCase()), 500 * i);
   }
 }
 
@@ -108,10 +113,12 @@ function turnCube(char) {
   let charUpperCase = char[0].toUpperCase();
   let oneSide = rubiksCube[convertChar(charUpperCase)];
 
-  if (char.length === 1) {
-    rubiksCube[convertChar(charUpperCase)] = turnClock(oneSide);
-  } else {
-    rubiksCube[convertChar(charUpperCase)] = turnCounterClock(oneSide);
+  if (charUpperCase !== 'Q') {
+    if (char.length === 1) {
+      rubiksCube[convertChar(charUpperCase)] = turnClock(oneSide);
+    } else {
+      rubiksCube[convertChar(charUpperCase)] = turnCounterClock(oneSide);
+    }
   }
 
   moveSide(char);
@@ -370,14 +377,6 @@ function makeDom(targetId, tag, className, result) {
 }
 
 // ---------------------------- 섞기 ----------------------------
-// 섞기 이벤트와 랜덤 섞기 이벤트 걸기
-function shuffleEvent() {
-  const button = document.querySelector('#shuffleButton');
-  const randomButton = document.querySelector('#randomShuffleButton');
-  button.addEventListener('click', clickShuffleButton);
-  randomButton.addEventListener('click', clickRandomShuffleButton);
-}
-
 // 숫자를 입력 받은 횟수 만큼 섞기
 function clickShuffleButton() {
   const count = document.querySelector('#count');
@@ -412,6 +411,17 @@ function shuffleCube(num) {
     let randomNum = Math.floor(Math.random() * 6);
     turnCube(cmd[randomNum]);
   }
+}
+
+// 이벤트 삭제
+function deleteEvent() {
+  const inputValue = document.querySelector('#inputValue');
+  const button = document.querySelector('#shuffleButton');
+  const randomButton = document.querySelector('#randomShuffleButton');
+
+  inputValue.removeEventListener('keypress', pressEnter);
+  button.removeEventListener('click', clickShuffleButton);
+  randomButton.removeEventListener('click', clickRandomShuffleButton);
 }
 
 init();
