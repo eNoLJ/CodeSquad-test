@@ -38,35 +38,43 @@ import consoleCube from '../helper/RubiksCubeConsoleOutput.js';
 // }
 
 // 큐브 밀기
-// function pushRubiksCube(value) {
-//   for (let i = 0; i < value.length; i++) {
-//     let char = value[i].toUpperCase();
-//     let length = value[i].length;
-//     let line;
+function pushRubiksCube(value) {
+  //   console.log(value);
+  for (let i = 0; i < value.length; i++) {
+    let char = value[i].toUpperCase();
 
-//     if (char[0] === 'U') {
-//       line = flatCube[0].slice();
-//     } else if (char[0] === 'R') {
-//       line = flatCube.map(el => el[2]);
-//     } else if (char[0] === 'L') {
-//       line = flatCube.map(el => el[0]);
-//       length = length === 1 ? 2 : 1;
-//     } else if (char[0] === 'B') {
-//       line = flatCube[2].slice();
-//       length = length === 1 ? 2 : 1;
-//     } else if (char[0] === 'Q') {
-//       //   deleteEvent();
-//       setTimeout(() => showResult(char), 500 * i);
-//       return;
-//     }
+    if (char === 'Q') {
+      // deleteEvent();
+    } else if (value[i].length === 1 || (value[i].length === 2 && value[i][1] === "'")) {
+      turnCube(value[i]);
+    } else {
+      turnCubeRepeat(char);
+    }
 
-//     let result = pushLine(line, length);
-//     makeRubiksCube(result, char[0]);
-//     setTimeout(() => showResult(char), 500 * i);
-//   }
-// }
+    //   deleteEvent();
+    //   setTimeout(() => showResult(char), 500 * i);
+    // let result = pushLine(line, length);
+    // makeRubiksCube(result, char[0]);
+    // setTimeout(() => showResult(char), 500 * i);
+  }
+}
 
-// 위로는 체크
+function turnCubeRepeat(value) {
+  let char;
+  let num;
+
+  if (value[1] === "'") {
+    char = value.slice(0, 2);
+    num = value.slice(2);
+  } else {
+    char = value.slice(0, 1);
+    num = value.slice(1);
+  }
+
+  for (let i = 0; i < Number(num); i++) {
+    turnCube(char);
+  }
+}
 
 // 입력 받은 문자열 재조합
 function recombinantString(value) {
@@ -109,7 +117,7 @@ function validateInputValue(value) {
     } else if (!validateChar(value[i]) && !Number(value[i]) && value[i] !== "'") {
       alert('올바른 값을 입력해 주세요.3');
       return;
-    } else if (value[i].toUpperCase() === 'Q' && value[i + 1] === "'") {
+    } else if (value[i].toUpperCase() === 'Q' && (value[i + 1] === "'" || Number(value[i + 1]))) {
       alert('올바른 값을 입력해 주세요.4');
       return;
     }
@@ -128,9 +136,9 @@ function pressEnter(e) {
 
 function makeOneSideCube(color) {
   return [
-    ['a', 'b', 'c'],
-    ['d', 'e', 'f'],
-    ['g', 'h', 'i'],
+    [color, color, color],
+    [color, color, color],
+    [color, color, color],
   ];
 
   // [
@@ -148,11 +156,11 @@ function makeOneSideCube(color) {
   //     ['d', 'e', 'f'],
   //     ['g', 'h', 'i'],
   //   ];
-  // [
-  //   [color, color, color],
-  //   [color, color, color],
-  //   [color, color, color],
-  // ];
+  //   [
+  //     [color, color, color],
+  //     [color, color, color],
+  //     [color, color, color],
+  //   ];
 }
 
 // 파일을 읽을 때 input 박스에 이벤트를 건다.
@@ -177,9 +185,9 @@ function turnCube(char) {
   let oneSide = rubiksCube[convertChar(charUpperCase)];
 
   if (char.length === 1) {
-    rubiksCube[charUpperCase] = turnClock(oneSide);
+    rubiksCube[convertChar(charUpperCase)] = turnClock(oneSide);
   } else {
-    rubiksCube[charUpperCase] = turnCounterClock(oneSide);
+    rubiksCube[convertChar(charUpperCase)] = turnCounterClock(oneSide);
   }
 
   moveSide(char);
@@ -323,20 +331,24 @@ function moveFrontBack(char, cube) {
   }
 }
 
-function frontBackOderHelper(char) {
-  let order = ['up', 'right', 'down', 'left'];
-  let side;
+// turnCube('f'); ["up", "right", "down", "left"]
+// turnCube("f'"); ["left", "up", "right", "down"]
+// turnCube('b'); ["right", "down", "left", "up"]
+// turnCube("b'"); ["down", "right", "up", "left"]
 
-  if (char[0].toUpperCase() === 'B' && char[1] !== "'") {
-    side = order.shift();
-    order.push(side);
+function frontBackOderHelper(char) {
+  let order;
+
+  if (char[0].toUpperCase() === 'F' && char[1] !== "'") {
+    order = ['up', 'left', 'down', 'right'];
   } else if (char[0].toUpperCase() === 'F' && char[1] === "'") {
-    side = order.pop();
-    order.unshift(side);
+    order = ['left', 'up', 'right', 'down'];
+  } else if (char[0].toUpperCase() === 'B' && char[1] !== "'") {
+    order = ['right', 'down', 'left', 'up'];
   } else if (char[0].toUpperCase() === 'B' && char[1] === "'") {
-    order = order.slice(2).concat(order.slice(0, 2));
+    order = ['down', 'right', 'up', 'left'];
   }
-  console.log(order);
+
   return order;
 }
 
@@ -355,14 +367,14 @@ function moveFrontBackHelper(index, order, cube, i, j, apostrophe) {
     }
   } else if (i === 1 || i === 3) {
     if (!apostrophe) {
-      rubiksCube[order[i]][j][idx[0]] = cube[order[(i + 1) % 4]][idx[1]][j];
+      rubiksCube[order[i]][j][idx[1]] = cube[order[(i + 1) % 4]][idx[0]][j];
     } else {
       rubiksCube[order[i]][idx[1]][j] = cube[order[(i + 1) % 4]][j][idx[0]];
     }
   }
 }
 
-turnCube("b'");
+// turnCube('f');
 
 // 숫자에 따른 회전
 // q 입력 시 구현
@@ -371,6 +383,7 @@ turnCube("b'");
 // 총 조작 갯수 구현
 // 셔플 기능
 // 맞출 시 축하 안내
+// 공백 엔터 처리
 
 // if (char === 'U') {
 //   rubiksCube.left[0] = copyCube.front[0];
