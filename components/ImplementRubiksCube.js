@@ -98,24 +98,28 @@ function recombinantString(value) {
 // ---------------------------- 큐브 밀기 ----------------------------
 // 입력받은 명령에 따라 루빅스 큐브 밀기 밀기
 function pushRubiksCube(value) {
+  let count = 0;
   for (let i = 0; i < value.length; i++) {
     if (value[i].toUpperCase() === 'Q') {
       deleteEvent();
     } else if (Number(value[i][1]) === 2) {
       turnCube(value[i]);
     }
-
     if (value[i].toUpperCase() !== 'Q') {
       turnCube(value[i]);
       rubiksCube.count++;
     }
-
     if (value[i].toUpperCase() !== 'Q' && rubiksCube.count === 1) {
       rubiksCube.time = new Date().getTime();
     }
-
-    setTimeout(() => showResult(value[i].toUpperCase()), 500 * i);
+    showResult(value[i].toUpperCase(), 500 * i);
+    if (checkCube()) {
+      break;
+    } else {
+      count++;
+    }
   }
+  setTimeout(() => clearMessage(), 500 * (count + 1));
 }
 
 // 입력받은 면과 주위 면을 변경
@@ -328,8 +332,9 @@ function moveFrontBackHelper(index, order, cube, i, j, apostrophe) {
 
 // ---------------------------- dom 결과 조작 ----------------------------
 // 만들어진 루빅스 큐브를 웹에 보여줌
-function showResult(char) {
+function showResult(char, time, check) {
   let result;
+
   if (char === 'Q') {
     result = `
     ${char} 
@@ -341,7 +346,11 @@ function showResult(char) {
     result = char + cubeToString();
   }
 
-  makeDom('#outputValue', 'li', 'result', result);
+  setTimeout(() => {
+    // if (!check) {
+    makeDom('#outputValue', 'li', 'result', result);
+    // }
+  }, time);
 }
 
 // 루빅스 큐브를 웹에 보여주기 위해 문자열로 변경
@@ -407,6 +416,7 @@ function deleteEvent() {
 // 숫자를 입력 받은 횟수 만큼 섞기
 function clickShuffleButton() {
   const count = document.querySelector('#count');
+
   if (0 < Number(count.value) && Number(count.value) < 100) {
     shuffleCube(Number(count.value));
     changeInitialCube();
@@ -436,12 +446,13 @@ function shuffleCube(num) {
 
   for (let i = 0; i < num; i++) {
     let randomNum = Math.floor(Math.random() * 6);
+    console.log(cmd[randomNum]);
     turnCube(cmd[randomNum]);
   }
 }
 
 // ---------------------------- 2. 경과시간 ----------------------------
-
+// 경과 시간 체크하는 함수
 function fineElapseTime() {
   let newTime = new Date().getTime();
   let min = Math.floor((newTime - rubiksCube.time) / 1000 / 60);
@@ -463,8 +474,49 @@ function fineElapseTime() {
 }
 
 // ---------------------------- 3. 축하 메세지 ----------------------------
+// 다 맞추면 축하 알림 후 이벤트 종료
+function clearMessage() {
+  if (checkCube()) {
+    alert('루빅스 큐브를 다 맞추셨습니다. 축하합니다.');
+    deleteEvent();
+  }
+}
+
+// 큐브가 다 맞춰졌는지 확인하는 함수
+function checkCube() {
+  let cmds = Object.keys(rubiksCube);
+  let check = true;
+  let color;
+
+  for (let i = 0; i < cmds.length - 2; i++) {
+    color = rubiksCube[cmds[i]][0][0];
+    if (!checkSide(rubiksCube[cmds[i]], color)) {
+      check = false;
+      break;
+    }
+  }
+
+  return check;
+}
+
+// 한면이 다 맞춰졌는지 확인하는 함수
+function checkSide(side, color) {
+  let check = true;
+
+  for (let i = 0; i < side.length; i++) {
+    for (let j = 0; j < side[i].length; j++) {
+      side[i][j] !== color ? (check = false) : null;
+    }
+    if (!check) {
+      break;
+    }
+  }
+
+  return check;
+}
 
 init();
+
 // turnCube('f');
 
 // q 입력 시 구현
