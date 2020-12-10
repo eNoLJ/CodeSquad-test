@@ -1,78 +1,18 @@
 import consoleCube from '../helper/RubiksCubeConsoleOutput.js';
 
-// 플랫 큐브 적용
-// function makeRubiksCube(line, char) {
-//   let copyFlatCube = flatCube.slice();
-
-//   if (char === 'U') {
-//     copyFlatCube[0] = line;
-//   } else if (char === 'R') {
-//     for (let i = 0; i < copyFlatCube.length; i++) {
-//       let copyLine = copyFlatCube[i].slice();
-//       copyLine[2] = line[i];
-//       copyFlatCube[i] = copyLine;
-//     }
-//   } else if (char === 'L') {
-//     for (let i = 0; i < copyFlatCube.length; i++) {
-//       let copyLine = copyFlatCube[i].slice();
-//       copyLine[0] = line[i];
-//       copyFlatCube[i] = copyLine;
-//     }
-//   } else if (char === 'B') {
-//     copyFlatCube[2] = line;
-//   }
-
-//   flatCube = copyFlatCube;
-// }
-
-// 한줄 밀기
-// function pushLine(value, length) {
-//   if (length === 1) {
-//     let char = value.shift();
-//     value.push(char);
-//   } else if (length === 2) {
-//     let char = value.pop();
-//     value.unshift(char);
-//   }
-//   return value;
-// }
-
-// 큐브 밀기
+// 입력받은 명령에 따라 루빅스 큐브 밀기 밀기
 function pushRubiksCube(value) {
-  //   console.log(value);
+  console.log(value);
   for (let i = 0; i < value.length; i++) {
-    let char = value[i].toUpperCase();
-
-    if (char === 'Q') {
+    if (value[i].toUpperCase() === 'Q') {
       // deleteEvent();
-    } else if (value[i].length === 1 || (value[i].length === 2 && value[i][1] === "'")) {
+      return;
+    } else if (Number(value[i][1]) === 2) {
       turnCube(value[i]);
-    } else {
-      turnCubeRepeat(char);
     }
-
-    //   deleteEvent();
-    //   setTimeout(() => showResult(char), 500 * i);
-    // let result = pushLine(line, length);
-    // makeRubiksCube(result, char[0]);
+    turnCube(value[i]);
+    return;
     // setTimeout(() => showResult(char), 500 * i);
-  }
-}
-
-function turnCubeRepeat(value) {
-  let char;
-  let num;
-
-  if (value[1] === "'") {
-    char = value.slice(0, 2);
-    num = value.slice(2);
-  } else {
-    char = value.slice(0, 1);
-    num = value.slice(1);
-  }
-
-  for (let i = 0; i < Number(num); i++) {
-    turnCube(char);
   }
 }
 
@@ -103,7 +43,6 @@ function validateChar(char) {
 }
 
 // 입력값에 대한 유효성 검사
-// U L F R B D 숫자 ' Q
 function validateInputValue(value) {
   if (!validateChar(value[0])) {
     alert('올바른 값을 입력해 주세요.1');
@@ -111,13 +50,13 @@ function validateInputValue(value) {
   }
 
   for (let i = 0; i < value.length; i++) {
-    if (value[i] === "'" && !validateChar(value[i - 1])) {
+    if (!validateChar(value[i]) && value[i] !== "'" && Number(value[i]) !== 2) {
       alert('올바른 값을 입력해 주세요.2');
       return;
-    } else if (!validateChar(value[i]) && !Number(value[i]) && value[i] !== "'") {
+    } else if (value[i] === "'" && (!validateChar(value[i - 1]) || Number(value[i + 1]))) {
       alert('올바른 값을 입력해 주세요.3');
       return;
-    } else if (value[i].toUpperCase() === 'Q' && (value[i + 1] === "'" || Number(value[i + 1]))) {
+    } else if (Number(value[i]) === 2 && !validateChar(value[i - 1])) {
       alert('올바른 값을 입력해 주세요.4');
       return;
     }
