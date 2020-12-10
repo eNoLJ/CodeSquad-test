@@ -1,5 +1,5 @@
 export default function consoleCube(cube) {
-  return `
+  console.log(`
           ${cube.up[0]}
           ${cube.up[1]}
           ${cube.up[2]}
@@ -11,5 +11,5 @@ export default function consoleCube(cube) {
           ${cube.down[0]}
           ${cube.down[1]}
           ${cube.down[2]}
-    `;
+    `);
 }

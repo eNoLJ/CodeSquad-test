@@ -1,5 +1,6 @@
 import consoleCube from '../helper/RubiksCubeConsoleOutput.js';
 
+// ---------------------------- init ----------------------------
 // 파일을 읽을 때 input 박스에 이벤트를 건다.
 function init() {
   window.rubiksCube = {
@@ -14,6 +15,7 @@ function init() {
   const inputValue = document.querySelector('#inputValue');
   inputValue.addEventListener('keypress', pressEnter);
   makeDom('#initialCube', 'div', 'cube', cubeToString());
+  shuffleEvent();
 }
 
 // 입력 받은 색깔로 2차원 배열 생성
@@ -33,6 +35,7 @@ function pressEnter(e) {
   }
 }
 
+// ---------------------------- 유효성 검사 ----------------------------
 // 입력값에 대한 유효성 검사
 function validateInputValue(value) {
   if (!validateChar(value[0])) {
@@ -82,6 +85,7 @@ function recombinantString(value) {
   }, []);
 }
 
+// ---------------------------- 큐브 밀기 ----------------------------
 // 입력받은 명령에 따라 루빅스 큐브 밀기 밀기
 function pushRubiksCube(value) {
   for (let i = 0; i < value.length; i++) {
@@ -305,6 +309,7 @@ function moveFrontBackHelper(index, order, cube, i, j, apostrophe) {
   }
 }
 
+// ---------------------------- dom 결과 조작 ----------------------------
 // 만들어진 루빅스 큐브를 웹에 보여줌
 function showResult(char) {
   let result;
@@ -355,13 +360,6 @@ function blankOutput(num) {
   return blank;
 }
 
-// shuffleButton버튼 클릭 시 초기상태 변경
-function initialCube() {
-  const target = document.querySelector('.cube');
-  target.remove();
-  makeDom('#initialCube', 'div', 'cube', cubeToString());
-}
-
 // 타겟태그, 만들태그, 만들클래스이름, 넣을내용 입력 시 첫번째 자식노드로 삽입
 function makeDom(targetId, tag, className, result) {
   const target = document.querySelector(targetId);
@@ -369,6 +367,51 @@ function makeDom(targetId, tag, className, result) {
   newResult.classList.add(className);
   newResult.innerHTML = result;
   target.insertBefore(newResult, target.firstChild);
+}
+
+// ---------------------------- 섞기 ----------------------------
+// 섞기 이벤트와 랜덤 섞기 이벤트 걸기
+function shuffleEvent() {
+  const button = document.querySelector('#shuffleButton');
+  const randomButton = document.querySelector('#randomShuffleButton');
+  button.addEventListener('click', clickShuffleButton);
+  randomButton.addEventListener('click', clickRandomShuffleButton);
+}
+
+// 숫자를 입력 받은 횟수 만큼 섞기
+function clickShuffleButton() {
+  const count = document.querySelector('#count');
+  if (0 < Number(count.value) && Number(count.value) < 100) {
+    shuffleCube(Number(count.value));
+    changeInitialCube();
+  } else {
+    alert('1부터 99까지의 숫자 중 하나를 입력해 주세요.');
+  }
+
+  count.value = '';
+}
+
+// 랜덤섞기 클릭 시 랜덤으로 20번 섞임
+function clickRandomShuffleButton() {
+  shuffleCube(20);
+  changeInitialCube();
+}
+
+// shuffleButton버튼 클릭 시 초기상태 변경
+function changeInitialCube() {
+  const target = document.querySelector('.cube');
+  target.remove();
+  makeDom('#initialCube', 'div', 'cube', cubeToString());
+}
+
+// 입력받은 숫자만큼 랜덤 섞기
+function shuffleCube(num) {
+  let cmd = ['u', 'l', 'f', 'r', 'b', 'd'];
+
+  for (let i = 0; i < num; i++) {
+    let randomNum = Math.floor(Math.random() * 6);
+    turnCube(cmd[randomNum]);
+  }
 }
 
 init();
