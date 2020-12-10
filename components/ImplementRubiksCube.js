@@ -10,6 +10,8 @@ function init() {
     right: makeOneSideCube('B'),
     back: makeOneSideCube('O'),
     down: makeOneSideCube('Y'),
+    count: 0,
+    time: 0,
   };
 
   const inputValue = document.querySelector('#inputValue');
@@ -33,7 +35,9 @@ function makeOneSideCube(color) {
 // enter 클릭 시 입력값에 대한 유효성검사 함수 실행.
 function pressEnter(e) {
   if (e.keyCode === 13) {
-    validateInputValue(e.target.value);
+    if (e.target.value !== '') {
+      validateInputValue(e.target.value);
+    }
     e.target.value = '';
   }
 }
@@ -103,7 +107,13 @@ function pushRubiksCube(value) {
 
     if (value[i].toUpperCase() !== 'Q') {
       turnCube(value[i]);
+      rubiksCube.count++;
     }
+
+    if (value[i].toUpperCase() !== 'Q' && rubiksCube.count === 1) {
+      rubiksCube.time = new Date().getTime();
+    }
+
     setTimeout(() => showResult(value[i].toUpperCase()), 500 * i);
   }
 }
@@ -321,7 +331,12 @@ function moveFrontBackHelper(index, order, cube, i, j, apostrophe) {
 function showResult(char) {
   let result;
   if (char === 'Q') {
-    result = '경과시간 조작갯수 감사합니다.';
+    result = `
+    ${char} 
+    <br> 경과시간: ${fineElapseTime()}
+    <br> 조작갯수: ${rubiksCube.count}
+    <br> 이용해주셔서 감사합니다. 뚜뚜뚜.
+    `;
   } else {
     result = char + cubeToString();
   }
@@ -376,7 +391,19 @@ function makeDom(targetId, tag, className, result) {
   target.insertBefore(newResult, target.firstChild);
 }
 
-// ---------------------------- 섞기 ----------------------------
+// 이벤트 삭제
+function deleteEvent() {
+  const inputValue = document.querySelector('#inputValue');
+  const button = document.querySelector('#shuffleButton');
+  const randomButton = document.querySelector('#randomShuffleButton');
+
+  inputValue.removeEventListener('keypress', pressEnter);
+  button.removeEventListener('click', clickShuffleButton);
+  randomButton.removeEventListener('click', clickRandomShuffleButton);
+}
+
+// ---------------------------- 추가 구현 ----------------------------
+// ---------------------------- 1. 섞기 ----------------------------
 // 숫자를 입력 받은 횟수 만큼 섞기
 function clickShuffleButton() {
   const count = document.querySelector('#count');
@@ -413,16 +440,29 @@ function shuffleCube(num) {
   }
 }
 
-// 이벤트 삭제
-function deleteEvent() {
-  const inputValue = document.querySelector('#inputValue');
-  const button = document.querySelector('#shuffleButton');
-  const randomButton = document.querySelector('#randomShuffleButton');
+// ---------------------------- 2. 경과시간 ----------------------------
 
-  inputValue.removeEventListener('keypress', pressEnter);
-  button.removeEventListener('click', clickShuffleButton);
-  randomButton.removeEventListener('click', clickRandomShuffleButton);
+function fineElapseTime() {
+  let newTime = new Date().getTime();
+  let min = Math.floor((newTime - rubiksCube.time) / 1000 / 60);
+  let sec = Math.floor(((newTime - rubiksCube.time) / 1000) % 60);
+
+  if (min === 0) {
+    min = '00';
+  } else if (min < 10) {
+    min = '0' + min;
+  }
+
+  if (sec === 0) {
+    sec = '00';
+  } else if (sec < 10) {
+    sec = '0' + sec;
+  }
+
+  return min + ':' + sec;
 }
+
+// ---------------------------- 3. 축하 메세지 ----------------------------
 
 init();
 // turnCube('f');
