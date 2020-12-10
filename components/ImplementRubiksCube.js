@@ -1,70 +1,70 @@
 import consoleCube from '../helper/RubiksCubeConsoleOutput.js';
 
 // 플랫 큐브 적용
-function makeRubiksCube(line, char) {
-  let copyFlatCube = flatCube.slice();
+// function makeRubiksCube(line, char) {
+//   let copyFlatCube = flatCube.slice();
 
-  if (char === 'U') {
-    copyFlatCube[0] = line;
-  } else if (char === 'R') {
-    for (let i = 0; i < copyFlatCube.length; i++) {
-      let copyLine = copyFlatCube[i].slice();
-      copyLine[2] = line[i];
-      copyFlatCube[i] = copyLine;
-    }
-  } else if (char === 'L') {
-    for (let i = 0; i < copyFlatCube.length; i++) {
-      let copyLine = copyFlatCube[i].slice();
-      copyLine[0] = line[i];
-      copyFlatCube[i] = copyLine;
-    }
-  } else if (char === 'B') {
-    copyFlatCube[2] = line;
-  }
+//   if (char === 'U') {
+//     copyFlatCube[0] = line;
+//   } else if (char === 'R') {
+//     for (let i = 0; i < copyFlatCube.length; i++) {
+//       let copyLine = copyFlatCube[i].slice();
+//       copyLine[2] = line[i];
+//       copyFlatCube[i] = copyLine;
+//     }
+//   } else if (char === 'L') {
+//     for (let i = 0; i < copyFlatCube.length; i++) {
+//       let copyLine = copyFlatCube[i].slice();
+//       copyLine[0] = line[i];
+//       copyFlatCube[i] = copyLine;
+//     }
+//   } else if (char === 'B') {
+//     copyFlatCube[2] = line;
+//   }
 
-  flatCube = copyFlatCube;
-}
+//   flatCube = copyFlatCube;
+// }
 
 // 한줄 밀기
-function pushLine(value, length) {
-  if (length === 1) {
-    let char = value.shift();
-    value.push(char);
-  } else if (length === 2) {
-    let char = value.pop();
-    value.unshift(char);
-  }
-  return value;
-}
+// function pushLine(value, length) {
+//   if (length === 1) {
+//     let char = value.shift();
+//     value.push(char);
+//   } else if (length === 2) {
+//     let char = value.pop();
+//     value.unshift(char);
+//   }
+//   return value;
+// }
 
 // 큐브 밀기
-function pushRubiksCube(value) {
-  for (let i = 0; i < value.length; i++) {
-    let char = value[i].toUpperCase();
-    let length = value[i].length;
-    let line;
+// function pushRubiksCube(value) {
+//   for (let i = 0; i < value.length; i++) {
+//     let char = value[i].toUpperCase();
+//     let length = value[i].length;
+//     let line;
 
-    if (char[0] === 'U') {
-      line = flatCube[0].slice();
-    } else if (char[0] === 'R') {
-      line = flatCube.map(el => el[2]);
-    } else if (char[0] === 'L') {
-      line = flatCube.map(el => el[0]);
-      length = length === 1 ? 2 : 1;
-    } else if (char[0] === 'B') {
-      line = flatCube[2].slice();
-      length = length === 1 ? 2 : 1;
-    } else if (char[0] === 'Q') {
-      //   deleteEvent();
-      setTimeout(() => showResult(char), 500 * i);
-      return;
-    }
+//     if (char[0] === 'U') {
+//       line = flatCube[0].slice();
+//     } else if (char[0] === 'R') {
+//       line = flatCube.map(el => el[2]);
+//     } else if (char[0] === 'L') {
+//       line = flatCube.map(el => el[0]);
+//       length = length === 1 ? 2 : 1;
+//     } else if (char[0] === 'B') {
+//       line = flatCube[2].slice();
+//       length = length === 1 ? 2 : 1;
+//     } else if (char[0] === 'Q') {
+//       //   deleteEvent();
+//       setTimeout(() => showResult(char), 500 * i);
+//       return;
+//     }
 
-    let result = pushLine(line, length);
-    makeRubiksCube(result, char[0]);
-    setTimeout(() => showResult(char), 500 * i);
-  }
-}
+//     let result = pushLine(line, length);
+//     makeRubiksCube(result, char[0]);
+//     setTimeout(() => showResult(char), 500 * i);
+//   }
+// }
 
 // 위로는 체크
 
@@ -172,29 +172,6 @@ function init() {
 
 init();
 
-/*
-U -> W 회전, <- G <- R <- B <- O 변경 Y
-L -> G 회전, W -> R -> Y -> O -> 변경 B
-F -> R 회전, W -> B -> Y -> G -> 변경 O
-R -> B 회전, <- W <- R <- Y <- O 변경 G
-B -> O 회전, <- W <- B <- Y <- G 변경 R
-D -> Y 회전, G -> R -> B -> O -> 변경 W
-
-0,0 -> 0,2 2,0
-0,1 -> 1,2 1,0
-0,2 -> 2,2 0,0
-
-1,0 -> 0,1 2,1
-1,1 -> 1,1 1,1
-1,2 -> 2,1 0,1
-
-2,0 -> 0,0 2,2
-2,1 -> 1,0 1,2
-2,2 -> 2,0 0,2
-*/
-
-// U L F'
-
 function turnCube(char) {
   let charUpperCase = char[0].toUpperCase();
   let oneSide = rubiksCube[convertChar(charUpperCase)];
@@ -256,70 +233,36 @@ function moveSide(char) {
   let charUpperCase = char[0].toUpperCase();
   let copyCube = JSON.parse(JSON.stringify(rubiksCube));
 
-  if (charUpperCase === 'U') {
+  if (charUpperCase === 'U' || charUpperCase === 'D') {
     moveUpDown(char, copyCube);
-  } else if (charUpperCase === 'L') {
+  } else if (charUpperCase === 'L' || charUpperCase === 'R') {
     moveLeftRight(char, copyCube);
-  } else if (charUpperCase === 'F') {
-    rubiksCube.up[2][0] = copyCube.left[2][2];
-    rubiksCube.up[2][1] = copyCube.left[1][2];
-    rubiksCube.up[2][2] = copyCube.left[0][2];
-
-    rubiksCube.right[0][0] = copyCube.up[2][0];
-    rubiksCube.right[1][0] = copyCube.up[2][1];
-    rubiksCube.right[2][0] = copyCube.up[2][2];
-
-    rubiksCube.down[0][0] = copyCube.right[2][0];
-    rubiksCube.down[0][1] = copyCube.right[1][0];
-    rubiksCube.down[0][2] = copyCube.right[0][0];
-
-    rubiksCube.left[0][2] = copyCube.down[0][0];
-    rubiksCube.left[1][2] = copyCube.down[0][1];
-    rubiksCube.left[2][2] = copyCube.down[0][2];
-  } else if (charUpperCase === 'R') {
-    moveLeftRight(char, copyCube);
-  } else if (charUpperCase === 'B') {
-    rubiksCube.up[0][0] = copyCube.right[0][2];
-    rubiksCube.up[0][1] = copyCube.right[1][2];
-    rubiksCube.up[0][2] = copyCube.right[2][2];
-
-    rubiksCube.right[0][2] = copyCube.down[2][2];
-    rubiksCube.right[1][2] = copyCube.down[2][1];
-    rubiksCube.right[2][2] = copyCube.down[2][0];
-
-    rubiksCube.down[2][0] = copyCube.left[0][0];
-    rubiksCube.down[2][1] = copyCube.left[1][0];
-    rubiksCube.down[2][2] = copyCube.left[2][0];
-
-    rubiksCube.left[0][0] = copyCube.up[0][2];
-    rubiksCube.left[1][0] = copyCube.up[0][1];
-    rubiksCube.left[2][0] = copyCube.up[0][0];
-  } else if (charUpperCase === 'D') {
-    moveUpDown(char, copyCube);
+  } else if (charUpperCase === 'F' || charUpperCase === 'B') {
+    moveFrontBack(char, copyCube);
   }
 
   consoleCube(rubiksCube);
 }
 
 function moveUpDown(char, cube) {
-  let idx;
+  let idx = char[0].toUpperCase() === 'U' ? 0 : 2;
   let order = ['left', 'front', 'right', 'back'];
 
-  char[0].toUpperCase() === 'U' ? (idx = 0) : (idx = 2);
-  char[0].toUpperCase() === 'D' || char[1] === "'" ? (order = order.reverse()) : null;
+  if (
+    (char[0].toUpperCase() === 'U' && char[1] === "'") ||
+    (char[0].toUpperCase() === 'D' && char[1] !== "'")
+  ) {
+    order = order.reverse();
+  }
 
   for (let i = 0; i < order.length; i++) {
-    if (i !== order.length - 1) {
-      rubiksCube[order[i]][idx] = cube[order[i + 1]][idx];
-    } else {
-      rubiksCube[order[i]][idx] = cube[order[0]][idx];
-    }
+    rubiksCube[order[i]][idx] = cube[order[(i + 1) % 4]][idx];
   }
 }
 
 function moveLeftRight(char, cube) {
   let idx = [0, 2];
-  let order = oderHelper(char);
+  let order = leftRightOderHelper(char);
 
   if (char[0].toUpperCase() === 'R') {
     idx[0] = 2;
@@ -333,7 +276,7 @@ function moveLeftRight(char, cube) {
   }
 }
 
-function oderHelper(char) {
+function leftRightOderHelper(char) {
   let order = ['down', 'front', 'up', 'back'];
   let side;
 
@@ -349,29 +292,85 @@ function oderHelper(char) {
   return order;
 }
 
-function moveLeftRightHelper(idx, order, cube, i, j) {
+function moveLeftRightHelper(index, order, cube, i, j) {
+  let idx = index.slice();
   if (i === 0 || i === 1) {
-    rubiksCube[order[i]][j][idx[0]] = cube[order[i + 1]][j][idx[0]];
-  } else if (i === 2) {
-    rubiksCube[order[i]][j][idx[0]] = cube[order[i + 1]][Math.abs(j - 2)][idx[1]];
+    rubiksCube[order[i]][j][idx[0]] = cube[order[(i + 1) % 4]][j][idx[0]];
   } else {
-    rubiksCube[order[i]][j][idx[1]] = cube[order[0]][Math.abs(j - 2)][idx[0]];
+    if (i === 3) {
+      idx = idx.reverse();
+    }
+    rubiksCube[order[i]][j][idx[0]] = cube[order[(i + 1) % 4]][Math.abs(j - 2)][idx[1]];
   }
 }
 
-/*
-U -> W 회전, <- G <- R <- B <- O 변경 Y
+function moveFrontBack(char, cube) {
+  let idx = [0, 2];
+  let apostrophe = false;
+  let order = frontBackOderHelper(char);
 
-L -> G 회전, W -> R -> Y -> O -> 변경 B
-F -> R 회전, W -> B -> Y -> G -> 변경 O
-R -> B 회전, <- W <- R <- Y <- O 변경 G
-B -> O 회전, <- W <- B <- Y <- G 변경 R
+  if (
+    (char[0].toUpperCase() === 'F' && char[1] === "'") ||
+    (char[0].toUpperCase() === 'B' && char[1] !== "'")
+  ) {
+    apostrophe = true;
+  }
 
-D -> Y 회전, G -> R -> B -> O -> 변경 W
-*/
+  for (let i = 0; i < 4; i++) {
+    for (let j = 0; j < 3; j++) {
+      moveFrontBackHelper(idx, order, cube, i, j, apostrophe);
+    }
+  }
+}
 
-turnCube('r');
-// turnCube('d');
+function frontBackOderHelper(char) {
+  let order = ['up', 'right', 'down', 'left'];
+  let side;
+
+  if (char[0].toUpperCase() === 'B' && char[1] !== "'") {
+    side = order.shift();
+    order.push(side);
+  } else if (char[0].toUpperCase() === 'F' && char[1] === "'") {
+    side = order.pop();
+    order.unshift(side);
+  } else if (char[0].toUpperCase() === 'B' && char[1] === "'") {
+    order = order.slice(2).concat(order.slice(0, 2));
+  }
+  console.log(order);
+  return order;
+}
+
+function moveFrontBackHelper(index, order, cube, i, j, apostrophe) {
+  let idx = index.slice();
+
+  if (i === 2 || i === 3) {
+    idx = idx.reverse();
+  }
+
+  if (i === 0 || i === 2) {
+    if (!apostrophe) {
+      rubiksCube[order[i]][idx[1]][j] = cube[order[(i + 1) % 4]][Math.abs(j - 2)][idx[1]];
+    } else {
+      rubiksCube[order[i]][Math.abs(j - 2)][idx[1]] = cube[order[(i + 1) % 4]][idx[1]][j];
+    }
+  } else if (i === 1 || i === 3) {
+    if (!apostrophe) {
+      rubiksCube[order[i]][j][idx[0]] = cube[order[(i + 1) % 4]][idx[1]][j];
+    } else {
+      rubiksCube[order[i]][idx[1]][j] = cube[order[(i + 1) % 4]][j][idx[0]];
+    }
+  }
+}
+
+turnCube("b'");
+
+// 숫자에 따른 회전
+// q 입력 시 구현
+// dom 구현
+// 경과 시간 구현
+// 총 조작 갯수 구현
+// 셔플 기능
+// 맞출 시 축하 안내
 
 // if (char === 'U') {
 //   rubiksCube.left[0] = copyCube.front[0];
