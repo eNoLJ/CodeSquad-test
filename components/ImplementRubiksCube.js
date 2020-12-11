@@ -414,12 +414,13 @@ function deleteEvent() {
 // 숫자를 입력 받은 횟수 만큼 섞기
 function clickShuffleButton() {
   const count = document.querySelector('#count');
+  let num = Number(count.value);
 
-  if (0 < Number(count.value) && Number(count.value) < 100) {
-    shuffleCube(Number(count.value));
+  if (0 < num && num < 100 && Number.isInteger(num)) {
+    shuffleCube(num);
     changeInitialCube();
   } else {
-    alert('1부터 99까지의 숫자 중 하나를 입력해 주세요.');
+    alert('1부터 99까지의 숫자 중 정수 하나를 입력해 주세요.');
   }
 
   count.value = '';
@@ -444,7 +445,6 @@ function shuffleCube(num) {
 
   for (let i = 0; i < num; i++) {
     let randomNum = Math.floor(Math.random() * 6);
-    console.log(cmd[randomNum]);
     turnCube(cmd[randomNum]);
   }
 }
