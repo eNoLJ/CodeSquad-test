@@ -117,7 +117,7 @@ function pushRubiksCube(value) {
       count++;
     }
   }
-  setTimeout(() => clearMessage(), 500 * (count + 1));
+  setTimeout(() => (rubiksCube.time ? clearMessage() : null), 500 * (count + 1));
 }
 
 // 입력받은 면과 주위 면을 변경
@@ -131,9 +131,8 @@ function turnCube(char) {
     } else {
       rubiksCube[convertChar(charUpperCase)] = turnCounterClock(oneSide);
     }
+    moveSide(char);
   }
-
-  moveSide(char);
 }
 
 // 입력받은 문자를 문자열로 변경
@@ -455,6 +454,10 @@ function fineElapseTime() {
   let newTime = new Date().getTime();
   let min = Math.floor((newTime - rubiksCube.time) / 1000 / 60);
   let sec = Math.floor(((newTime - rubiksCube.time) / 1000) % 60);
+
+  if (rubiksCube.time === 0) {
+    return '00:00';
+  }
 
   if (min === 0) {
     min = '00';
