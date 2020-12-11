@@ -1,5 +1,3 @@
-import consoleCube from '../helper/RubiksCubeConsoleOutput.js';
-
 // ---------------------------- init ----------------------------
 // 파일을 읽을 때 input 박스에 이벤트를 건다.
 function init() {
