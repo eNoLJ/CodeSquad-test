@@ -116,7 +116,9 @@ function validateChar(char) {
 
 // 입력값에 대한 유효성 검사
 function validateInputValue(value) {
-  if (!validateChar(value[0])) {
+  if (value === '') {
+    return;
+  } else if (!validateChar(value[0])) {
     alert('올바른 값을 입력해 주세요.');
     return;
   }
