@@ -44,22 +44,22 @@ function pressEnter(e) {
 // 입력값에 대한 유효성 검사
 function validateInputValue(value) {
   if (!validateChar(value[0])) {
-    alert('올바른 값을 입력해 주세요.1');
+    alert('올바른 값을 입력해 주세요.');
     return;
   }
 
   for (let i = 0; i < value.length; i++) {
     if (!validateChar(value[i]) && value[i] !== "'" && Number(value[i]) !== 2) {
-      alert('올바른 값을 입력해 주세요.2');
+      alert('올바른 값을 입력해 주세요.');
       return;
     } else if (value[i] === "'" && (!validateChar(value[i - 1]) || Number(value[i + 1]))) {
-      alert('올바른 값을 입력해 주세요.3');
+      alert('올바른 값을 입력해 주세요.');
       return;
     } else if (Number(value[i]) === 2 && !validateChar(value[i - 1])) {
-      alert('올바른 값을 입력해 주세요.4');
+      alert('올바른 값을 입력해 주세요.');
       return;
     } else if (value[i].toUpperCase() === 'Q' && value[i + 1]) {
-      alert('올바른 값을 입력해 주세요.5');
+      alert('올바른 값을 입력해 주세요.');
       return;
     }
   }

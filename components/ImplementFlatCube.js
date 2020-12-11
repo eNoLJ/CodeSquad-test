@@ -31,7 +31,7 @@ function validateInputValue(value) {
       alert('올바른 값을 입력해 주세요.');
       return;
     }
-    if (value[i].toUpperCase() === 'Q' && value[i + 1] === "'") {
+    if (value[i].toUpperCase() === 'Q' && value[i + 1]) {
       alert('올바른 값을 입력해 주세요.');
       return;
     }
