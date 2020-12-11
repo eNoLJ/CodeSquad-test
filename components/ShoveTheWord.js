@@ -16,6 +16,10 @@ function validateInputValue(value) {
   const valueArr = value.split(' ');
   const [word, integer, command] = valueArr;
 
+  if (value === '') {
+    return;
+  }
+
   if (valueArr.length > 3) {
     alert('올바른 값을 입력해 주세요.');
     return;
