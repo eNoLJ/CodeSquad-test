@@ -48,8 +48,13 @@ function validateInteger(integer) {
 
 // 입력값에 대한 유효성 검사
 function validateInputValue(value) {
-  const valurArr = value.split(' ');
-  const [word, integer, command] = valurArr;
+  const valueArr = value.split(' ');
+  const [word, integer, command] = valueArr;
+
+  if (valueArr.length > 3) {
+    alert('올바른 값을 입력해 주세요.');
+    return;
+  }
 
   if (validateInteger(integer) && validateCommand(command)) {
     let result = shoveTheWord(word, integer, command);
