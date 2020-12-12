@@ -1,17 +1,9 @@
-h1 {
-  position: relative;
-  text-align: center;
-  top: 1em;
-  font-size: 3em;
+#comment {
+  font-size: 1.3em;
 }
 
-#comment {
-  position: relative;
-  top: 3em;
-  padding-left: 20%;
-  padding-right: 20%;
-  font-size: 1.3em;
-  min-width: 10em;
+.result {
+  margin-bottom: 20px;
 }
 
 #initialCube {
@@ -19,28 +11,4 @@ h1 {
   top: 4em;
   font-size: 1.2em;
   padding-left: 20%;
-}
-
-#inputText,
-#outputText {
-  position: relative;
-  top: 5em;
-  font-size: 1.2em;
-  padding-left: 20%;
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-
-#inputValue {
-  position: relative;
-  top: 7em;
-}
-
-.result {
-  position: relative;
-  top: 5em;
-  font-size: 1.2em;
-  padding-left: 20%;
-  list-style: none;
-  margin-bottom: 20px;
 }
