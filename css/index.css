@@ -1,0 +1,18 @@
+h1 {
+  position: relative;
+  text-align: center;
+  top: 2em;
+  font-size: 4em;
+}
+
+.page {
+  position: relative;
+  text-align: center;
+  top: 6em;
+  font-size: 1.5em;
+  margin-bottom: 2em;
+}
+
+a {
+  text-decoration: none;
+}
