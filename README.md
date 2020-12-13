@@ -26,10 +26,10 @@ index.html을 웹브라우저를 통해 실행 시킨다.
 ### 유효성 검사
 
 - validateInputValue 함수와 함꼐 validateInteger, validateCommand 함수로 유효성 감사를 시작한다.
-  - 공백일 때,
-  - 입력 항목이 3가지 이상 일 때,
-  - -100 이상 100 미만의 정수가 아닐 때(validateInteger),
-  - 명령문이 r,l,R,L이 아닐 때(validateCommand), 경고창을 띄우게 된다.
+  > - 공백일 때,
+  > - 입력 항목이 3가지 이상 일 때,
+  > - -100 이상 100 미만의 정수가 아닐 때(validateInteger),
+  > - 명령문이 r,l,R,L이 아닐 때(validateCommand), 경고창을 띄우게 된다.
 - 모든 유효성 검사가 통과되면 값을 shovTheWord 함수로 전달 한다.
 
 ### 문자 재조합
@@ -41,3 +41,47 @@ index.html을 웹브라우저를 통해 실행 시킨다.
 ### 결과 출력
 
 - showResult 함수에서는 dom을 이용하여 입력 받은 값을 브라우저 화면에 띄워주게 된다.
+
+## Stpe-2 평면 큐브 구현하기
+
+- 2차원 배열을 아래 명령에 따라 동작하는 프로그램을 구현 한다.
+  > - U 가장 윗줄을 왼쪽으로 한 칸 밀기 RRW -> RWR
+  > - U' 가장 윗줄을 오른쪽으로 한 칸 밀기 RRW -> WRR
+  > - R 가장 오른쪽 줄을 위로 한 칸 밀기 WWB -> WBW
+  > - R' 가장 오른쪽 줄을 아래로 한 칸 밀기 WWB -> BWW
+  > - L 가장 왼쪽 줄을 아래로 한 칸 밀기 RGG -> GRG (L의 경우 R과 방향이 반대임을 주의한다.)
+  > - L' 가장 왼쪽 줄을 위로 한 칸 밀기 RGG -> GGR
+  > - B 가장 아랫줄을 오른쪽으로 한 칸 밀기 GBB -> BGB (B의 경우도 U와 방향이 반대임을 주의한다.)
+  > - B' 가장 아랫줄을 왼쪽으로 한 칸 밀기 GBB -> BBG
+  > - Q Bye~를 출력하고 프로그램을 종료한다.
+
+### 시작
+
+- init 함수에서 2차원 배열을 만든다.
+- init 함수에서 입력창에 pressEnter 함수 이벤트를 건다.
+- pressEnter 함수는 입력창의 값을 받아 유효성 검사 함수인 validateInputValue 함수로 전달 한다.
+
+### 유효성 검사
+
+- validateInputValue 함수와 함꼐 validateChar 함수로 유효성 감사를 시작한다.
+  > - 공백일 때,
+  > - 첫번째 자리가 올바른 명령 문자가 아닐 때,
+  > - 입력 받은 문자가 명령 문자가 아닐 때(validateChar),
+  > - "'"가 연속으로 입력 될 때,
+  > - Q 다음에 문자가 입력 될 때, 경고창을 띄우게 된다.
+- 모든 유효성 검사가 통과되면 값을 recombinantString 함수로 전달 한다.
+
+### 평면 큐브 재조합
+
+- validateInputValue 함수에서 넘어온 값으로 평면 큐브 재조합을 시작한다.
+- recombinantString 함수에서 명령 문자와 "'"를 구분하여 재조합해 반환 한다.
+- pushFlatCube 함수에서 2차원 배열로 되어 있는 평면 큐브를 명령에 따라 pushLine, makeFlatCube 함수를 이용하여 밀어낸다.
+- pushLine 함수는 입력 받은 값을 재조합 후 반환 한다.
+- makeFlatCube 함수에서는 실직적으로 큐브를 만들어 2차원 배열에 적용 한다.
+- 재조합이 완료 된 배열을 showResult 함수로 전달 한다.
+
+### 결과 출력
+
+- showResult 함수에서는 cubeToString 함수와 dom을 이용하여 입력 받은 값을 브라우저 화면에 띄워주게 된다.
+- cubeToString 함수는 배열을 문자열로 만들어 반환 한다.
+- deleteEvent 함수는 Q가 입력 될 시 걸려 있던 이벤트를 삭제 한다.
