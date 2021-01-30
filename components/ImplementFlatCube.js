@@ -17,7 +17,7 @@ function pressEnter(e) {
   }
 }
 
-// 입력값에 대한 유효성 검사
+// 입력값에 대한 유효성 검사.
 function validateInputValue(value) {
   if (value === '') {
     return;
