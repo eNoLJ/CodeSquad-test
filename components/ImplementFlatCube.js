@@ -53,7 +53,7 @@ function recombinantString(value) {
   }, []);
 }
 
-// 알파벳에 대한 유효성 검사
+// 알파벳에 대한 유효성 검사.
 function validateChar(char) {
   char = char.toUpperCase();
   return char === 'U' || char === 'R' || char === 'L' || char === 'B' || char === 'Q';
